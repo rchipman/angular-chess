@@ -1,0 +1,12 @@
+<div class="board-container">
+    <ul class="board-squares">
+        <li
+        ng-repeat="square in board"
+        ng-class="{'dark': square.dark, 'has-piece': square.piece != null, 'selected': square.piece.selected, 'viable-move': square.viableMove}"
+        ng-click="getMovementOptions(square)">
+            <span ng-show="square.piece" class="{{square.piece.player}}">
+                {{square.piece.type}}
+            </span>
+        </li>
+    </ul>
+</div>
