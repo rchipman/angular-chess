@@ -1,0 +1,57 @@
+.board-container {
+    width: 480px;
+    height: 480px;
+    margin: 100px auto 0 auto;
+    padding: 25px;
+    background: #F0ECDA;
+}
+.board-squares {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.board-squares li {
+    float: left;
+    display: block;
+    text-align: center;
+    width: 60px;
+    height: 60px;;
+    background: #fff;
+    font-family: helvetica, arial, sans-serif;
+    color: #999;
+    cursor: pointer;
+}
+
+.board-squares li.dark {
+    background: #ddd;
+}
+
+.board-squares li.has-piece:hover {
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15) inset;
+}
+
+.board-squares li.viable-move,
+.board-squares li.viable-move:hover {
+    box-shadow: 0px 0px 15px rgba(0, 0, 255, 0.35) inset;
+}
+
+.board-squares li span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 15px auto;
+    background: #fff;
+    border: 2px solid #ccc;
+    color: #999;
+    border-radius: 50%;
+    font-size: 0.8em;
+    font-weighT: bold;
+}
+
+.board-squares li span.black {
+    color: #fff;
+    background: #222;
+    border-color: #222;
+}
