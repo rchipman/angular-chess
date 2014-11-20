@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Angular Chess</title>
+        <link rel="stylesheet" href="/css/lib/normalize.css" media="screen" title="no title" charset="utf-8">
         <link rel="stylesheet" href="/css/chess.css" media="screen" title="no title" charset="utf-8">
     </head>
     <body ng-app="chess">
@@ -10,8 +11,21 @@
             <div board></div>
         </div>
 
-        <script src="js/dependencies/angular.min.js"></script>
-        <script src="js/dependencies/underscore.min.js"></script>
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/lib/underscore.min.js"></script>
+
         <script src="js/chess.js"></script>
+
+        <script src="js/util/coordsService.js"></script>
+        <script src="js/pieces/pawnService.js"></script>
+        <script src="js/pieces/rookService.js"></script>
+        <script src="js/pieces/knightService.js"></script>
+        <script src="js/pieces/bishopService.js"></script>
+        <script src="js/pieces/queenService.js"></script>
+        <script src="js/pieces/kingService.js"></script>
+        <script src="js/pieceService.js"></script>
+        <script src="js/boardService.js"></script>
+
+
     </body>
 </html>

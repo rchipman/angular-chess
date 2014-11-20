@@ -1,9 +1,10 @@
+<div class="player-turn-display">It is currently <span class="{{currentPlayer}}">{{currentPlayer}}'s</span> turn to play.</div>
 <div class="board-container">
     <ul class="board-squares">
         <li
         ng-repeat="square in board"
-        ng-class="{'dark': square.dark, 'has-piece': square.piece != null, 'selected': square.piece.selected, 'viable-move': square.viableMove}"
-        ng-click="getMovementOptions(square)">
+        ng-class="{'dark': square.dark, 'has-piece': square.piece != null, 'selected': square.piece.selected, 'viable-move': square.viableMove, 'hasControl': square.piece.player == currentPlayer}"
+        ng-click="squareClicked(square)">
             <span ng-show="square.piece" class="{{square.piece.player}}">
                 {{square.piece.type}}
             </span>
