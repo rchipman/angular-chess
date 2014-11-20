@@ -1,92 +1,32 @@
 Chess = angular.module("chess", []);
 
-Chess.factory("boardService", function() {
-    function isDark(a, n) {
-        return (n % 2 && _.contains(['A', 'C', 'E', 'G'], a)) || (!(n % 2) && _.contains(['B', 'D', 'F', 'H'], a))
-    }
-
-    function getSpecialPiece(player, a) {
-        piece = {player: player}
-        if (a == 'A' || a == 'H') {
-            piece.type = 'R'
-        } else if (a == 'B' || a == 'G') {
-            piece.type = 'N'
-        } else if (a == 'C' || a == 'F') {
-            piece.type = 'B'
-        } else if (a == 'D') {
-            if (piece.player == 'black') {
-                piece.type = 'Q'
-            } else {
-                piece.type = 'K'
-            }
-        } else {
-            if (piece.player == 'white') {
-                piece.type = 'Q'
-            } else {
-                piece.type = 'K'
-            }
-        }
-        return piece;
-    }
-
-    function getPiece(a, n) {
-        piece = null
-        if (n == 8) {
-            piece = getSpecialPiece('black', a)
-        } else if (n == 7) {
-            piece = {'player': 'black', type: 'P'}
-        } else if (n == 2) {
-            piece = {'player': 'white', type: 'P'}
-        } else if (n == 1) {
-            piece = getSpecialPiece('white', a)
-        }
-        return piece;
-    }
-
-    function initBoard() {
-        alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-        num = [8, 7, 6, 5, 4, 3, 2, 1];
-
-        squares = []
-        for (i = 0; i < num.length; i++) {
-            n = num[i];
-            for (y = 0; y < alpha.length; y++) {
-                a = alpha[y];
-                coords = a + n;
-                square = {
-                    coords: coords,
-                    dark: isDark(a, n),
-                    viableMove: false,
-                    piece: getPiece(a, n)
-                }
-                squares.push(square);
-            }
-        }
-        return squares;
-    }
-
-    return {
-        getBoard: function() { return initBoard() }
-    };
-})
-
-Chess.controller("playarea", ["$scope", "boardService", function($scope, boardService) {
+Chess.controller("playarea",
+["$scope", "boardService", "pieceService", "coordsService",
+function($scope, boardService, pieceService, coordsService) {
 
     $scope.board = boardService.getBoard();
+    $scope.currentPlayer = 'white';
+    currentSelectedSquare = null;
 
-    function setValidMove(coords) {
-        board = _.map($scope.board, function(square) {
-            square.viableMove = false;
-            return square;
-        })
-        _.findWhere(board, {coords: coords}).viableMove = true;
-        return board;
+    function endTurn(oldCoords, newCoords) {
+        $scope.board = boardService.processMove($scope.board, oldCoords, newCoords);
+        if ($scope.currentPlayer === 'white') {
+            $scope.currentPlayer = 'black';
+        } else {
+            $scope.currentPlayer = 'white';
+        }
     }
 
-    $scope.getMovementOptions = function(square) {
-        if (square.piece != null) {
+    $scope.squareClicked = function(square) {
+        if (square.piece != null && square.piece.player == $scope.currentPlayer) {
+            currentSelectedSquare = square
             square.selected = true;
-            $scope.board = setValidMove(square.coords);
+            coordsObj = coordsService.getCoordsObj(square.coords);
+            service = pieceService[square.piece.type.toLowerCase()];
+            possibleSquares = service.getPossibleSquares(coordsObj, square.piece.player, boardService.getPiecePositions($scope.board));
+            $scope.board = boardService.setValidMoves($scope.board, possibleSquares);
+        } else if (square.viableMove && currentSelectedSquare !== null) {
+            endTurn(currentSelectedSquare.coords, square.coords);
         }
     }
 
